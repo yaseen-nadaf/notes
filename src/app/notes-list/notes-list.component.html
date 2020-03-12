@@ -1,1 +1,17 @@
-<p>notes-list works!</p>
+<div fxLayout="row" fxLayoutAlign="space-between stretch" class="full-height">
+  <div fxFlex="25" class="p-5" style="border-right: 2px solid #ccc;">
+    <div *ngFor="let note of notesList; let i = index">
+      <mat-card class="m-t-5" [ngClass]="note.selected ? 'highlight':''" (click)="changeCardColor(note);" [routerLink]="['/notes/', note.id]">
+        <b>{{note.title | slice: 0:30}}<span *ngIf="note.title.length > 30">...</span></b>
+        <div fxLayout="row" fxLayoutAlign="space-between stretch">
+          <div fxFlex="30">{{note.timestamp}}</div>
+          <div fxFlex="70">{{note.description | slice: 0:20}}<span *ngIf="note.description.length > 20">...</span>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <div fxFlex="75" class="p-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+mat-card {
+  outline: none;
+  cursor: pointer;
+}
+
+.highlight {
+  background-color: yellow;
+}

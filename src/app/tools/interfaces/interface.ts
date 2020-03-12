@@ -2,5 +2,6 @@ export interface Note {
   id: string;
   title: string;
   description: string;
-  timestamp: Date;
+  timestamp: string;
+  selected: boolean;
 }
