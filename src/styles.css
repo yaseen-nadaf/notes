@@ -17,6 +17,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
   padding: 5px;
 }
 
+.p-r-15 {
+  padding-right: 15px;
+}
+
 .p-x-5 {
   padding: 0px 5px;
 }

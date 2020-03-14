@@ -1,17 +1,37 @@
 <div fxLayout="row" fxLayoutAlign="space-between stretch" class="full-height">
-  <div fxFlex="25" class="p-5" style="border-right: 2px solid #ccc;">
-    <div *ngFor="let note of notesList; let i = index">
-      <mat-card class="m-t-5" [ngClass]="note.selected ? 'highlight':''" (click)="changeCardColor(note);" [routerLink]="['/notes/', note.id]">
-        <b>{{note.title | slice: 0:30}}<span *ngIf="note.title.length > 30">...</span></b>
-        <div fxLayout="row" fxLayoutAlign="space-between stretch">
-          <div fxFlex="30">{{note.timestamp}}</div>
-          <div fxFlex="70">{{note.description | slice: 0:20}}<span *ngIf="note.description.length > 20">...</span>
+  <div fxFlex="25" class="p-5" class="sidebar">
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="p-y-5">
+      <div fxFlex="85"></div>
+      <div fxFlex="15">
+        <button mat-icon-button color="primary" (click)="addNew()">
+          <i class="material-icons">add</i>
+        </button>
+      </div>
+    </div>
+    <div *ngFor="let note of notesList.slice().reverse()" class="m-x-5">
+      <mat-card class="m-t-5" [ngClass]="note.selected ? 'highlight':''" (click)="changeCardColor(note);"
+        [routerLink]="['/notes/', note.id]">
+        <mat-card-content>
+          <div fxLayout="row" fxLayoutAlign="space-between start">
+            <div fxFlex="90">
+              <p class="word-ellipses"><b>{{note.title}}</b></p>
+              <p class="word-ellipses">{{note.description}}</p>
+              <p>{{note.timestamp}}</p>
+            </div>
+            <button fxFlex mat-icon-button color="warn" (click)="deleteNote(note)">
+              <i class="material-icons">delete</i>
+            </button>
           </div>
-        </div>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>
   <div fxFlex="75" class="p-5">
-    <router-outlet></router-outlet>
+    <div *ngIf="notesList.length > 0">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="center" *ngIf="notesList.length === 0">
+      Please create or select a note
+    </div>
   </div>
 </div>

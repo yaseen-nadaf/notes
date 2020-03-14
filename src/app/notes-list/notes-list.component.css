@@ -3,6 +3,17 @@ mat-card {
   cursor: pointer;
 }
 
+.sidebar {
+  border-right: 2px solid #ccc;
+  overflow: auto;
+}
+
 .highlight {
   background-color: yellow;
+}
+
+.word-ellipses {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
