@@ -1,3 +1,19 @@
+# Task Requirements
+
+1. Create/Delete Notes [done]
+2. Reactive Interface [done]
+3. Responsive UI (for mobile -> keep screen size less than 450px and refresh browser) [done]
+4. Deep search within notes (title & note text) [done]
+5. Auto-updating timestamp [done]
+6. Use of Local Storage for back end work [done]
+
+# Important 
+
+1. Preferred to go with different flow for mobile and large devices hence didn't implement collapse/expand of sidebar since requirement was to keep sidebar opened in large devices and collapsed in mobile.
+
+2. I have never used or worked on Redux, hence will learn it soon in near future and didn't use it in this task.
+
+
 # Notes
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.

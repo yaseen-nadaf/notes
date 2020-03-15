@@ -3,7 +3,7 @@ import { Note } from './../tools/interfaces/interface';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-details',
@@ -15,14 +15,18 @@ export class DetailsComponent implements OnInit {
   noteId = '';
   noteDate = '';
   note: Note;
+  isMobile = false;
 
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private route: ActivatedRoute,
     // tslint:disable-next-line: align
-    private noteService: NotesService) {
+    private noteService: NotesService, private router: Router) {
     this.notesForm = this.fb.group({
       title: ['', Validators.compose([Validators.required])],
       description: ['']
     });
+    if (window.innerWidth <= 450) {
+      this.isMobile = true;
+    }
   }
 
   ngOnInit(): void {
@@ -54,10 +58,12 @@ export class DetailsComponent implements OnInit {
     this.snackBar.open('Your Note Updated Successfully !!', '',  {
       duration: 3000
     });
+    if (this.isMobile) {
+      this.router.navigate(['/mobilenotes']);
+    }
   }
 
   updateNoteTitle(event) {
-    console.log(event.target.value);
     this.noteService.updateTitle(event.target.value);
   }
 

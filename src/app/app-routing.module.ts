@@ -12,6 +12,12 @@ const routes: Routes = [
       { path: ':id', component: DetailsComponent },
     ]
   },
+  {
+    path: 'mobilenotes', component: NotesListComponent
+  },
+  {
+    path: 'mobilenotes/:id', component: DetailsComponent
+  },
 ];
 
 @NgModule({

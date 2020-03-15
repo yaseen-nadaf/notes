@@ -13,8 +13,14 @@ export class NotesListComponent implements OnInit, OnDestroy {
   subscription1;
   subscription2;
   deletedNote;
+  searchText = '';
+  isMobile = false;
 
-  constructor(private noteService: NotesService, private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor(private noteService: NotesService, private router: Router, private cdr: ChangeDetectorRef) {
+    if (window.innerWidth <= 450) {
+      this.isMobile = true;
+    }
+   }
 
   ngOnInit(): void {
     this.subscription1 = this.noteService.listenUpdates().subscribe(data => {
@@ -24,7 +30,11 @@ export class NotesListComponent implements OnInit, OnDestroy {
       }
     });
     this.notesList = this.noteService.getNotes();
-    this.router.navigate(['/notes/3']);
+    if (!this.isMobile) {
+      this.router.navigate(['/notes/3']);
+    } else {
+      this.router.navigate(['/mobilenotes']);
+    }
     this.noteService.setNoteToUpdate(this.notesList[this.notesList.length - 1]);
     this.updateTitle();
   }
@@ -53,7 +63,11 @@ export class NotesListComponent implements OnInit, OnDestroy {
     this.notesList.push(newNote);
     this.changeCardColor(newNote);
     this.noteService.updateNotesList(this.notesList);
-    this.router.navigate(['/notes/' + +(newNote.id)]);
+    if (!this.isMobile) {
+      this.router.navigate(['/notes/' + +(newNote.id)]);
+    } else {
+      this.router.navigate(['/mobilenotes/' + +(newNote.id)]);
+    }
   }
 
   deleteNote(note) {
@@ -62,23 +76,39 @@ export class NotesListComponent implements OnInit, OnDestroy {
     if (this.notesList.length > 0) {
       if (this.notesList.length >= 1) {
         this.notesList[0].selected = true;
-        this.router.navigate(['/notes/' + +(this.notesList[0].id)]);
+        if (!this.isMobile) {
+          this.router.navigate(['/notes/' + +(this.notesList[0].id)]);
+        } else {
+          this.router.navigate(['/mobilenotes/' + +(this.notesList[0].id)]);
+        }
         this.changeCardColor(this.notesList[0]);
       }
     } else {
-      this.router.navigate(['/notes']);
+      if (!this.isMobile) {
+        this.router.navigate(['/notes']);
+      } else {
+        this.router.navigate(['/mobilenotes']);
+      }
     }
     this.noteService.updateNotesList(this.notesList);
   }
 
   updateTitle() {
     this.subscription2 = this.noteService.listenTitle().subscribe(val => {
-      if (val === []) { }
-      if (val !== '') {
+      // tslint:disable-next-line: triple-equals
+      if (val != '') {
         const note = this.noteService.getNoteToUpdate();
         this.notesList.find(item => item.id === note.id).title = val;
       }
     });
+  }
+
+  goToNote(id) {
+    if (!this.isMobile) {
+      this.router.navigate(['/notes/' + +id]);
+    } else {
+      this.router.navigate(['/mobilenotes/' + +id]);
+    }
   }
 
   ngOnDestroy() {

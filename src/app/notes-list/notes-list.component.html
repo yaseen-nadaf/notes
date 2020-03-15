@@ -1,21 +1,26 @@
 <div fxLayout="row" fxLayoutAlign="space-between stretch" class="full-height">
-  <div fxFlex="25" class="p-5" class="sidebar">
-    <div fxLayout="row" fxLayoutAlign="space-between center" class="p-y-5">
-      <div fxFlex="85"></div>
+  <div [fxFlex]="!this.isMobile ? 25:100" class="p-5" [ngClass]="!this.isMobile ? 'sidebar':''">
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="border-bottom: 1px solid #e5e5e5;">
+      <div fxFlex="80" class="p-t-10">
+        <mat-form-field appearance="outline" class="full-width p-x-5 search-field">
+          <mat-label>Search Notes</mat-label>
+          <input matInput type="text" [(ngModel)]="searchText" placeholder="Type your search text...">
+        </mat-form-field>
+      </div>
       <div fxFlex="15">
         <button mat-icon-button color="primary" (click)="addNew()">
           <i class="material-icons">add</i>
         </button>
       </div>
     </div>
-    <div *ngFor="let note of notesList.slice().reverse()" class="m-x-5">
-      <mat-card class="m-t-5" [ngClass]="note.selected ? 'highlight':''" (click)="changeCardColor(note);"
-        [routerLink]="['/notes/', note.id]">
+    <div *ngFor="let note of notesList.slice().reverse() | search: searchText" class="m-x-5">
+      <div *ngIf="searchText" class="search-results">Search Results</div>
+      <mat-card class="m-t-5" [ngClass]="note.selected ? 'highlight':''" (click)="changeCardColor(note); goToNote(note.id);">
         <mat-card-content>
           <div fxLayout="row" fxLayoutAlign="space-between start">
             <div fxFlex="90">
-              <p class="word-ellipses"><b>{{note.title}}</b></p>
-              <p class="word-ellipses">{{note.description}}</p>
+              <p class="word-ellipses"><b>{{note.title | titlecase}}</b></p>
+              <p class="word-ellipses">{{note.description | titlecase}}</p>
               <p>{{note.timestamp}}</p>
             </div>
             <button fxFlex mat-icon-button color="warn" (click)="deleteNote(note)">
@@ -26,7 +31,7 @@
       </mat-card>
     </div>
   </div>
-  <div fxFlex="75" class="p-5">
+  <div *ngIf="!this.isMobile" fxFlex="75" class="p-5">
     <div *ngIf="notesList.length > 0">
       <router-outlet></router-outlet>
     </div>

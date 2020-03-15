@@ -1,4 +1,9 @@
-<form [formGroup]="notesForm" novalidate>
+<div *ngIf="isMobile" class="left p-x-10">
+  <button mat-icon-button color="primary" routerLink="/mobilenotes">
+    <i class="material-icons">keyboard_backspace</i> Back
+  </button>
+</div>
+<form [formGroup]="notesForm" novalidate class="p-x-10">
   <div fxLayout="column" fxLayoutAlign="start none">
     <div fxFlex="10" class="time">
       <p>{{noteDate}}</p>
@@ -14,7 +19,7 @@
       <textarea rows="20" formControlName="description" placeholder="Enter Your Description"
       class="full-width text-area"></textarea>
     </div>
-    <div fxFlex="20" style="text-align: center;">
+    <div fxFlex="20" class="center p-t-10">
       <button mat-raised-button color="primary" size="small" [disabled]="!notesForm.valid" (click)="saveNote(notesForm.value)">Save</button>
     </div>
   </div>

@@ -9,11 +9,20 @@ mat-card {
 }
 
 .highlight {
-  background-color: yellow;
+  background-image: linear-gradient(to bottom right, lightskyblue, yellow);
 }
 
 .word-ellipses {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+::ng-deep .search-field .mat-form-field-wrapper {
+  padding-bottom: 10px;
+}
+
+.search-results {
+  font-size: 12px;
+  border-bottom: 1px solid #e5e5e5;
 }

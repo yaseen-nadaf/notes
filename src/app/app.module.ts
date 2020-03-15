@@ -6,10 +6,12 @@ import { AppComponent } from './app.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { MaterialModule } from './tools/material/material.module';
+import { PipesModule } from './tools/pipes/pipes.module';
 import { NotesListComponent } from './notes-list/notes-list.component';
 import { DetailsComponent } from './details/details.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     FlexLayoutModule,
     MaterialModule,
+    PipesModule,
     FormsModule,
     ReactiveFormsModule
   ],

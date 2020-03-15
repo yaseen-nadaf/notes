@@ -11,10 +11,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
   width: 100% !important;
 }
 
+.mat-typography p {
+  margin: 0px;
+}
+
 /* Paddings */
 
 .p-5 {
   padding: 5px;
+}
+
+.p-t-10 {
+  padding-top: 10px;
 }
 
 .p-r-15 {
@@ -73,4 +81,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
 
 .m-y-15 {
   margin: 15px 0px;
+}
+
+/* Text Colors */
+
+.t-yellow {
+  color: yellow;
+}
+
+/* Alignments */
+
+.center {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
 }
