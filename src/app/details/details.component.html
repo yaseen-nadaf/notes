@@ -1,14 +1,17 @@
 <div *ngIf="isMobile" class="left p-x-10">
+  <!-- This button will appear when you are in mobile view i.e (screen size <= 450px) -->
   <button mat-icon-button color="primary" routerLink="/mobilenotes">
     <i class="material-icons">keyboard_backspace</i> Back
   </button>
 </div>
+<!-- Following code is used for creating/viewing/updating any note -->
 <form [formGroup]="notesForm" novalidate class="p-x-10">
   <div fxLayout="column" fxLayoutAlign="start none">
     <div fxFlex="10" class="time">
-      <p>{{noteDate}}</p>
+      <p>Last Updated: {{noteDate}}</p>
     </div>
     <div fxFlex="20">
+      <!-- Note title with reactive interface and is mandatory field -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Enter Your Title</mat-label>
         <input matInput type="text" placeholder="Title" formControlName="title" (keyup)="updateNoteTitle($event)">
@@ -16,10 +19,12 @@
       </mat-form-field>
     </div>
     <div fxFlex="40" class="p-r-15">
+      <!-- Input field to enter your note text -->
       <textarea rows="20" formControlName="description" placeholder="Enter Your Description"
       class="full-width text-area"></textarea>
     </div>
     <div fxFlex="20" class="center p-t-10">
+      <!-- Button to save your note -->
       <button mat-raised-button color="primary" size="small" [disabled]="!notesForm.valid" (click)="saveNote(notesForm.value)">Save</button>
     </div>
   </div>

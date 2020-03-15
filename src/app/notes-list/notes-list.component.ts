@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { Note } from './../tools/interfaces/interface';
 import { NotesService } from '../tools/services/notes.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notes-list',
@@ -16,29 +17,37 @@ export class NotesListComponent implements OnInit, OnDestroy {
   searchText = '';
   isMobile = false;
 
-  constructor(private noteService: NotesService, private router: Router, private cdr: ChangeDetectorRef) {
+  constructor(private noteService: NotesService, private router: Router) {
+    // Determine whether mobile screen or not
     if (window.innerWidth <= 450) {
       this.isMobile = true;
     }
    }
 
   ngOnInit(): void {
+    // Subscribing to notes list observable to show updated notes everytime
+    // save button is clicked in details page
     this.subscription1 = this.noteService.listenUpdates().subscribe(data => {
       if (data) {
         this.notesList = data;
-        // this.changeCardColor();
       }
     });
+    // Get notes from local storage
     this.notesList = this.noteService.getNotes();
+
+    // By default route to appropriate page depending upon device size for first time app load
     if (!this.isMobile) {
       this.router.navigate(['/notes/3']);
     } else {
       this.router.navigate(['/mobilenotes']);
     }
+
+    // Having an instance of note whose title should be updated via reactive interface
     this.noteService.setNoteToUpdate(this.notesList[this.notesList.length - 1]);
     this.updateTitle();
   }
 
+  // changes color of selected card
   changeCardColor(val) {
     const index = this.notesList.indexOf(val);
     this.noteService.setNoteToUpdate(val);
@@ -63,11 +72,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
     this.notesList.push(newNote);
     this.changeCardColor(newNote);
     this.noteService.updateNotesList(this.notesList);
-    if (!this.isMobile) {
-      this.router.navigate(['/notes/' + +(newNote.id)]);
-    } else {
-      this.router.navigate(['/mobilenotes/' + +(newNote.id)]);
-    }
+    this.routeToNote(newNote.id);
   }
 
   deleteNote(note) {
@@ -76,11 +81,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
     if (this.notesList.length > 0) {
       if (this.notesList.length >= 1) {
         this.notesList[0].selected = true;
-        if (!this.isMobile) {
-          this.router.navigate(['/notes/' + +(this.notesList[0].id)]);
-        } else {
-          this.router.navigate(['/mobilenotes/' + +(this.notesList[0].id)]);
-        }
+        this.routeToNote(this.notesList[0].id);
         this.changeCardColor(this.notesList[0]);
       }
     } else {
@@ -93,6 +94,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
     this.noteService.updateNotesList(this.notesList);
   }
 
+  // Updating note's title via reactive interface
   updateTitle() {
     this.subscription2 = this.noteService.listenTitle().subscribe(val => {
       // tslint:disable-next-line: triple-equals
@@ -103,7 +105,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToNote(id) {
+  routeToNote(id) {
     if (!this.isMobile) {
       this.router.navigate(['/notes/' + +id]);
     } else {
@@ -111,6 +113,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Unsubscribing from observables to avoid memory leakage
   ngOnDestroy() {
     this.subscription1.unsubscribe();
     this.subscription2.unsubscribe();

@@ -1,3 +1,6 @@
+// Import all necessary material APIs in this module and import this module
+// in every other modules to use Angular Material
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 

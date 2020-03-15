@@ -1,9 +1,10 @@
-import { NotesService } from './../tools/services/notes.service';
-import { Note } from './../tools/interfaces/interface';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { NotesService } from './../tools/services/notes.service';
+import { Note } from './../tools/interfaces/interface';
 
 @Component({
   selector: 'app-details',
@@ -17,19 +18,23 @@ export class DetailsComponent implements OnInit {
   note: Note;
   isMobile = false;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private route: ActivatedRoute,
+  constructor(private formBuilder: FormBuilder, private snackBar: MatSnackBar, private route: ActivatedRoute,
     // tslint:disable-next-line: align
     private noteService: NotesService, private router: Router) {
-    this.notesForm = this.fb.group({
+      // Form Initializing
+    this.notesForm = this.formBuilder.group({
       title: ['', Validators.compose([Validators.required])],
       description: ['']
     });
+
+    // Determine whether mobile screen or not
     if (window.innerWidth <= 450) {
       this.isMobile = true;
     }
   }
 
   ngOnInit(): void {
+    // Taking route parameters to show/update selected note's details
     this.route.params.subscribe(params => {
       this.noteId = params.id.toString();
       setTimeout(() => {
@@ -52,12 +57,16 @@ export class DetailsComponent implements OnInit {
     val['id'] = this.noteId;
     // tslint:disable-next-line: no-string-literal
     val['selected'] = true;
+
+    // Updating timestamp everytime when details are modified
     // tslint:disable-next-line: no-string-literal
     this.noteDate = val['timestamp'] = new Date().toLocaleString();
     this.noteService.saveNote(val, this.noteId);
     this.snackBar.open('Your Note Updated Successfully !!', '',  {
       duration: 3000
     });
+
+    // If mobile screen then after saving the this.note, user automatically routes notes-list page
     if (this.isMobile) {
       this.router.navigate(['/mobilenotes']);
     }

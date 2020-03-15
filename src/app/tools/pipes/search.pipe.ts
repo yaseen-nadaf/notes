@@ -9,12 +9,18 @@ export class SearchPipe implements PipeTransform {
     if (!listToSearch) { return []; }
     if (!searchText) { return listToSearch; }
 
-    return listToSearch.filter(item => {
+    const filteredNotes =  listToSearch.filter(item => {
       return item.title.toLowerCase().includes(searchText.toLowerCase()) ||
       item.description.toLowerCase().includes(searchText.toLowerCase()) ||
       (item.title.toLowerCase().includes(searchText.toLowerCase()) &&
       item.description.toLowerCase().includes(searchText.toLowerCase()));
     });
+
+    if (filteredNotes.length) {
+      return filteredNotes;
+    } else {
+      return [];
+    }
   }
 
 }

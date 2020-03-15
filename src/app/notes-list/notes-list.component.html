@@ -1,40 +1,58 @@
 <div fxLayout="row" fxLayoutAlign="space-between stretch" class="full-height">
   <div [fxFlex]="!this.isMobile ? 25:100" class="p-5" [ngClass]="!this.isMobile ? 'sidebar':''">
-    <div fxLayout="row" fxLayoutAlign="space-between center" style="border-bottom: 1px solid #e5e5e5;">
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="border-bottom">
       <div fxFlex="80" class="p-t-10">
+        <!-- Search Notes Input -->
         <mat-form-field appearance="outline" class="full-width p-x-5 search-field">
           <mat-label>Search Notes</mat-label>
           <input matInput type="text" [(ngModel)]="searchText" placeholder="Type your search text...">
+          <button mat-button matTooltip="Clear" *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear"
+            (click)="searchText=''">
+            <mat-icon>close</mat-icon>
+          </button>
         </mat-form-field>
       </div>
       <div fxFlex="15">
-        <button mat-icon-button color="primary" (click)="addNew()">
+        <!-- Button to add new note -->
+        <button mat-icon-button color="primary" (click)="addNew()" matTooltip="Add New Note">
           <i class="material-icons">add</i>
         </button>
       </div>
     </div>
-    <div *ngFor="let note of notesList.slice().reverse() | search: searchText" class="m-x-5">
-      <div *ngIf="searchText" class="search-results">Search Results</div>
-      <mat-card class="m-t-5" [ngClass]="note.selected ? 'highlight':''" (click)="changeCardColor(note); goToNote(note.id);">
-        <mat-card-content>
-          <div fxLayout="row" fxLayoutAlign="space-between start">
-            <div fxFlex="90">
-              <p class="word-ellipses"><b>{{note.title | titlecase}}</b></p>
-              <p class="word-ellipses">{{note.description | titlecase}}</p>
-              <p>{{note.timestamp}}</p>
-            </div>
-            <button fxFlex mat-icon-button color="warn" (click)="deleteNote(note)">
-              <i class="material-icons">delete</i>
-            </button>
-          </div>
-        </mat-card-content>
-      </mat-card>
+    <div class="m-x-5">
+      <!-- This line would only appear when you will start typing search text -->
+      <div *ngIf="searchText && (notesList | search: searchText).length > 0" class="search-results">Search Results</div>
+      <!-- Following code shows note cards and proper search results -->
+      <div *ngIf="notesList.slice().reverse() | search: searchText; else elseBlock">
+        <div *ngFor="let note of notesList.slice().reverse() | search: searchText">
+          <mat-card class="m-t-5" [ngClass]="note.selected ? 'highlight':''"
+            (click)="changeCardColor(note); routeToNote(note.id);">
+            <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="space-between start">
+                <div fxFlex="90">
+                  <p class="word-ellipses"><b>{{note.title | titlecase}}</b></p>
+                  <p class="word-ellipses">{{note.description | titlecase}}</p>
+                  <p>{{note.timestamp}}</p>
+                </div>
+                <button fxFlex mat-icon-button color="warn" (click)="deleteNote(note)" matTooltip="Delete">
+                  <i class="material-icons">delete</i>
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div #elseBlock>
+        <p *ngIf="searchText && (notesList | search: searchText).length === 0">No results found...</p>
+      </div>
     </div>
   </div>
+  <!-- Following code is to display note details in main viewable area -->
   <div *ngIf="!this.isMobile" fxFlex="75" class="p-5">
     <div *ngIf="notesList.length > 0">
       <router-outlet></router-outlet>
     </div>
+    <!-- Showing this message when no card is selected and when no card is available -->
     <div class="center" *ngIf="notesList.length === 0">
       Please create or select a note
     </div>
