@@ -6,6 +6,7 @@
 4. Deep search within notes (title & note text) [done]
 5. Auto-updating timestamp [done]
 6. Use of Local Storage for back end work [done]
+7. Hosted on Github Pages -> https://yaseen-nadaf.github.io/notes/
 
 # Important 
 
