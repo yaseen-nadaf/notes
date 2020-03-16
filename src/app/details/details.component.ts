@@ -58,7 +58,7 @@ export class DetailsComponent implements OnInit {
     // tslint:disable-next-line: no-string-literal
     val['selected'] = true;
 
-    // Updating timestamp everytime when details are modified
+    // Updating timestamp everytime when details are modified and save button is clicked
     // tslint:disable-next-line: no-string-literal
     this.noteDate = val['timestamp'] = new Date().toLocaleString();
     this.noteService.saveNote(val, this.noteId);

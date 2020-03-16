@@ -81,7 +81,9 @@ export class NotesListComponent implements OnInit, OnDestroy {
     if (this.notesList.length > 0) {
       if (this.notesList.length >= 1) {
         this.notesList[0].selected = true;
-        this.routeToNote(this.notesList[0].id);
+        if (!this.isMobile) {
+          this.router.navigate(['/notes/' + +(this.notesList[0].id)]);
+        }
         this.changeCardColor(this.notesList[0]);
       }
     } else {

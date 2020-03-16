@@ -23,7 +23,7 @@
       <!-- This line would only appear when you will start typing search text -->
       <div *ngIf="searchText && (notesList | search: searchText).length > 0" class="search-results">Search Results</div>
       <!-- Following code shows note cards and proper search results -->
-      <div *ngIf="notesList.slice().reverse() | search: searchText; else elseBlock">
+      <div *ngIf="notesList.slice().reverse() | search: searchText">
         <div *ngFor="let note of notesList.slice().reverse() | search: searchText">
           <mat-card class="m-t-5" [ngClass]="note.selected ? 'highlight':''"
             (click)="changeCardColor(note); routeToNote(note.id);">
@@ -42,8 +42,8 @@
           </mat-card>
         </div>
       </div>
-      <div #elseBlock>
-        <p *ngIf="searchText && (notesList | search: searchText).length === 0">No results found...</p>
+      <div *ngIf="searchText && (notesList | search: searchText).length === 0">
+        <p>No results found...</p>
       </div>
     </div>
   </div>
